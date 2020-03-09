@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <title>Sorting Algorithms</title>
+  </head>
+
+  <body>
+    <div class="modal">
+      <div class="instructions">
+        <h3><span class="cross">X</span></h3>
+        <h1>Welcome to my visualization app for Sorting Algorithms</h1>
+        <h3>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis,
+          illum animi officia fuga nostrum vitae vero. Recusandae iure sit porro
+          ipsa voluptas incidunt reprehenderit soluta omnis animi expedita
+          deserunt provident quod possimus, et quaerat, nobis maiores delectus.
+          Vitae necessitatibus eligendi suscipit nulla repellat, vel, saepe sed
+          porro, delectus ab animi!
+        </h3>
+      </div>
+    </div>
+    <ul class="navbar">
+      <li><span class="select-tag">Select Algorithm:</span></li>
+      <li><span class="btn">Bubble Sort</span></li>
+      <li><span class="btn">Quick Sort</span></li>
+      <li><span class="btn">Merge Sort</span></li>
+      <li><span class="btn">Bele Sort</span></li>
+    </ul>
+    <div class="visualization-field"></div>
+
+    <ul class="navbar-bottom">
+      <li><span class="select-tag">Select Array Size:</span></li>
+      <li>
+        <span class="slider"
+          ><label for="points">Values range from 10 to 100</label>
+          <input
+            type="range"
+            id="points"
+            name="points"
+            min="0"
+            max="100"/><output id="output"></output
+        ></span>
+      </li>
+      <li><span class="btn-start">Start</span></li>
+    </ul>
+
+    <script src="main.js"></script>
+  </body>
+</html>
