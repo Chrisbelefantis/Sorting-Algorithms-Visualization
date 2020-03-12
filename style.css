@@ -74,8 +74,9 @@ li {
 }
 
 .btn:hover {
-  background: white;
-  color: black;
+  background: rgb(196, 193, 193);
+  color: white;
+  
 }
 
 .btn-start {
@@ -90,12 +91,19 @@ li {
 }
 
 .btn-start:hover {
-  background: white;
-  color: black;
+  background: rgb(196, 193, 193);
+  color:white;
 }
+
+.active {
+  background: rgb(196, 193, 193);
+  color:white;
+}
+
 
 .select-tag {
   background-color: rgb(196, 193, 193);
+  color: white;
   border-left: 2px solid white;
   display: block;
   font-size: 1.5em;
@@ -119,6 +127,7 @@ li {
 
 .slider {
   background-color: rgb(196, 193, 193);
+  color: white;
   border-left: 2px solid white;
   display: block;
   font-size: 1.5em;

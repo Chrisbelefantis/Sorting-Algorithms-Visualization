@@ -18,49 +18,120 @@
 const printField = document.querySelector(".visualization-field");
 const slider = document.querySelector(".slider");
 const startBtn = document.querySelector(".btn-start");
-
-function bubbleSort(numbers){
-
-  for(let i=0; i<numbers.length-1; i++){
-    for(let j=0; j<numbers.length-1; j++){
-      
-      printArray(numbers);
-      if(numbers[j]>numbers[j+1]){
-        let temp = numbers[j];
-        numbers[j] = numbers[j+1];
-        numbers[j+1] = temp;
-      }
+const algorithmButtons = document.querySelectorAll(".btn");
 
 
+let isAlgorithmRunning = false;
+let numbers;
 
-    }
 
-
-  }
-
-  console.log(numbers);
+function sleep(milliseconds){
+  return new Promise((resolve,reject)=>{
+    setTimeout(()=> {resolve();},milliseconds);
+  })
 
 }
 
 
-function printArray(numbers) {
-  
-  printField.innerHTML = " ";
+async function bubbleSort(numbers){
 
-  numbers.forEach(element => {
+  for(let i=0; i<numbers.length-1; i++){
+
+    for(let j=0; j<numbers.length-1; j++){
+       
+      if(!isAlgorithmRunning){
+        return;
+      }
+      else if(numbers[j]>numbers[j+1]){
+        document.querySelector("#bar"+j+"").style.borderColor = "red";
+        document.querySelector("#bar"+(j+1)+"").style.borderColor = "red";
+        let temp = numbers[j];
+        numbers[j] = numbers[j+1];
+        numbers[j+1] = temp;
+        await sleep(0)
+        printArray(numbers);
+
+      }
+    }
+  }
+  isAlgorithmRunning = false;
+  startBtn.innerHTML = "Start";
+  startBtn.classList.remove("active");
+}
+
+
+async function quicksort(numbers,low,high){
+    
+  function swap(numbers,i,j){
+
+      temp = numbers[i];
+      numbers[i] = numbers[j];
+      numbers[j] = temp;
+
+  }
+
+  function partition(numbers,low,high){
+
+      let i = low-1;      
+      
+      for(j=low; j<high; j++){
+
+          if(numbers[j]<=numbers[high]){
+          
+          i = i + 1;
+          if(i!=j)
+          {     
+                  swap(numbers,i,j);
+          }
+          }
+      }
+
+      swap(numbers,i+1,high);
+      return i+1;
+
+  }
+
+  if(low<high){
+
+      await sleep(0);
+      printArray(numbers);
+      let partitionIndex = partition(numbers,low,high);
+     
+
+      quicksort(numbers,low,partitionIndex-1);
+      quicksort(numbers,partitionIndex + 1,high);
+  }
+
+  isAlgorithmRunning = false;
+  startBtn.innerHTML = "Start";
+  startBtn.classList.remove("active");
+  printArray(numbers);
+
+}
+
+
+
+
+
+
+function printArray(numbers) {
+
+  console.log(numbers);
+  printField.innerHTML = " ";
+  let count = 0;
+  numbers.forEach((element,index) => {
 
     let barHeight = "height:" + element + "%";
     printField.innerHTML +=
-      '<div class="vertical-bar" style = "' + barHeight + '"></div>';
-
+      '<div class="vertical-bar" id="bar'+count+'" style = "' + barHeight + '"></div>';
+    
+    count++;
 
 
   });
 }
 
-let numbers;
-
-slider.addEventListener("change", () => {
+slider.addEventListener("input", () => {
 
   numbers = [];
   numberOfArrays = document.querySelector("#points").value;
@@ -77,9 +148,55 @@ slider.addEventListener("change", () => {
 });
 
 
+algorithmButtons.forEach((button)=>{
+
+  button.addEventListener("click",()=>{
+
+    for(let i=0; i<algorithmButtons.length; i++){
+
+      algorithmButtons[i].classList.remove("active");
+
+    }
+    
+    button.classList.add("active");
+
+  });
+
+
+});
+
+
+
 
 startBtn.addEventListener("click",()=>{
 
-  bubbleSort(numbers);
+  if(!isAlgorithmRunning)
+  {
+    // isAlgorithmRunning = true;
+    // startBtn.innerHTML = "Stop";
+    // startBtn.classList.add("active");
+
+    if(algorithmButtons[0].classList.contains("active")){
+      isAlgorithmRunning = true;
+      startBtn.innerHTML = "Stop";
+      startBtn.classList.add("active");
+      bubbleSort(numbers);
+    }
+    else if(algorithmButtons[1].classList.contains("active")){
+
+      isAlgorithmRunning = true;
+      startBtn.innerHTML = "Stop";
+      startBtn.classList.add("active");
+      quicksort(numbers,0,numbers.length-1);
+
+    }
+ 
+  }
+  else
+  {
+    isAlgorithmRunning = false;
+    startBtn.innerHTML = "Start";
+    startBtn.classList.remove("active");
+  }
 
 });
