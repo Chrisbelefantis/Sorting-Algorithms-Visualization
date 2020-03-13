@@ -15,6 +15,11 @@
 
 
 
+// Φτιάξε το start-stop
+// Φτιάξε το animation στον quicksort
+// Γράψε καλύτερα την swapbars + βρες τα κατάλληλα delays
+
+
 const printField = document.querySelector(".visualization-field");
 const slider = document.querySelector(".slider");
 const startBtn = document.querySelector(".btn-start");
@@ -22,18 +27,49 @@ const algorithmButtons = document.querySelectorAll(".btn");
 
 
 let isAlgorithmRunning = false;
+let printQueueOrder = 0;
 let numbers;
 
 
-function sleep(milliseconds){
-  return new Promise((resolve,reject)=>{
-    setTimeout(()=> {resolve();},milliseconds);
-  })
+function printArray(printNumbers) {
 
+  printField.innerHTML = " ";
+  let count = 0;
+  printNumbers.forEach((element,index) => {
+
+  let barHeight = "height:" + element + "%";
+  printField.innerHTML += '<div class="vertical-bar"  style = "' + barHeight + '"></div>'; 
+  count++;
+
+    }
+  );
 }
 
 
-async function bubbleSort(numbers){
+
+function swapBars(numbers,i,j,printQueueOrder){
+
+   setTimeout(()=>{ 
+
+    const verticalBars = document.querySelectorAll(".vertical-bar");
+    
+    for(let k=0; k<numbers.length;k++){
+
+      verticalBars[k].style.borderColor = "black";
+
+    }
+
+    temp = verticalBars[i].style.height;
+
+    verticalBars[i].style.borderColor = "red";
+    verticalBars[i].style.height = verticalBars[j].style.height;
+
+    verticalBars[j].style.borderColor = "red";
+    verticalBars[j].style.height = temp;},100*printQueueOrder);
+}
+
+
+function bubbleSort(numbers){
 
   for(let i=0; i<numbers.length-1; i++){
 
@@ -43,93 +79,61 @@ async function bubbleSort(numbers){
         return;
       }
       else if(numbers[j]>numbers[j+1]){
-        document.querySelector("#bar"+j+"").style.borderColor = "red";
-        document.querySelector("#bar"+(j+1)+"").style.borderColor = "red";
         let temp = numbers[j];
         numbers[j] = numbers[j+1];
         numbers[j+1] = temp;
-        await sleep(0)
-        printArray(numbers);
+        printQueueOrder+=1;
+        swapBars([...numbers],j,j+1,printQueueOrder);
 
       }
     }
   }
-  isAlgorithmRunning = false;
-  startBtn.innerHTML = "Start";
-  startBtn.classList.remove("active");
 }
 
+function quicksort(numbers,low,high){
 
-async function quicksort(numbers,low,high){
-    
-  function swap(numbers,i,j){
-
+  function swapNumbers(numbers,i,j){
       temp = numbers[i];
       numbers[i] = numbers[j];
-      numbers[j] = temp;
-
+      numbers[j] = temp;      
   }
 
   function partition(numbers,low,high){
-
       let i = low-1;      
-      
+ 
       for(j=low; j<high; j++){
 
           if(numbers[j]<=numbers[high]){
           
           i = i + 1;
           if(i!=j)
-          {     
-                  swap(numbers,i,j);
+          {               
+            printQueueOrder+=1;
+            swapBars([...numbers],i,j,printQueueOrder);
+            swapNumbers(numbers,i,j); 
+       
           }
-          }
+        }
       }
 
-      swap(numbers,i+1,high);
+      printQueueOrder+=1;
+      swapBars([...numbers],i+1,high,printQueueOrder);
+      swapNumbers(numbers,i+1,high);
       return i+1;
-
   }
 
   if(low<high){
 
-      await sleep(0);
-      printArray(numbers);
+      
       let partitionIndex = partition(numbers,low,high);
      
 
       quicksort(numbers,low,partitionIndex-1);
       quicksort(numbers,partitionIndex + 1,high);
   }
-
-  isAlgorithmRunning = false;
-  startBtn.innerHTML = "Start";
-  startBtn.classList.remove("active");
-  printArray(numbers);
-
 }
 
 
-
-
-
-
-function printArray(numbers) {
-
-  console.log(numbers);
-  printField.innerHTML = " ";
-  let count = 0;
-  numbers.forEach((element,index) => {
-
-    let barHeight = "height:" + element + "%";
-    printField.innerHTML +=
-      '<div class="vertical-bar" id="bar'+count+'" style = "' + barHeight + '"></div>';
-    
-    count++;
-
-
-  });
-}
 
 slider.addEventListener("input", () => {
 
@@ -170,33 +174,77 @@ algorithmButtons.forEach((button)=>{
 
 startBtn.addEventListener("click",()=>{
 
+  console.log(isAlgorithmRunning);
+
+
   if(!isAlgorithmRunning)
   {
-    // isAlgorithmRunning = true;
-    // startBtn.innerHTML = "Stop";
-    // startBtn.classList.add("active");
+    isAlgorithmRunning = true;
+    startBtn.innerHTML = "Stop";
+    startBtn.classList.add("active");
+    printQueueOrder = 0;  //We need the printQueueOrder value in order to set the right timeouts for the animation.
 
+
+    //The algorithms run in real time and the results are printed using
+    //setTimeouts through the swapBars().
     if(algorithmButtons[0].classList.contains("active")){
-      isAlgorithmRunning = true;
-      startBtn.innerHTML = "Stop";
-      startBtn.classList.add("active");
+      
+
+      /****************************/
       bubbleSort(numbers);
+       /****************************/
+    
+      
     }
     else if(algorithmButtons[1].classList.contains("active")){
 
-      isAlgorithmRunning = true;
-      startBtn.innerHTML = "Stop";
-      startBtn.classList.add("active");
+      
+      /*******************************/
       quicksort(numbers,0,numbers.length-1);
+      /*******************************/
+     
+ 
 
     }
+
+    
+    setTimeout(()=>{
+      printArray(numbers)
+      startBtn.innerHTML = "Start";
+      isAlgorithmRunning = false;
+      startBtn.classList.remove("active");
+    },100*(printQueueOrder+1));
  
   }
-  else
+  else if(isAlgorithmRunning)
   {
+
+    //Clear all timeouts to stop printing the next steps of the algorithm.
+    var id = window.setTimeout(function() {}, 0);
+    while (id--) {
+    window.clearTimeout(id); 
+    }
+
+
+    //The current state of the visualatiotion field gives its values to the
+    //numbers array because the algorithms have run in real time and the 
+    //numbers list is now sorted.
+    const verticalBars = document.querySelectorAll(".vertical-bar");
+    verticalBars.forEach((element,index)=>{
+
+      elementHeight = element.style.height
+      elementHeight = elementHeight.replace('%','')
+       numbers[index] = parseInt(elementHeight);
+
+    });
+    printArray(numbers);
+
+
+
     isAlgorithmRunning = false;
     startBtn.innerHTML = "Start";
     startBtn.classList.remove("active");
+
   }
 
 });
