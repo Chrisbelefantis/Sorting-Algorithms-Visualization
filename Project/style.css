@@ -141,7 +141,7 @@ li {
   position: relative;
   left: 50%;
   transform: translate(-50%, 0);
-  height: 87vh;
+  height: 70vh;
   overflow: hidden;
   z-index: -1;
 }

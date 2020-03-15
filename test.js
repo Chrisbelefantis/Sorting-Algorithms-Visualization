@@ -1,16 +1,20 @@
-numbers = [1,2,3,4,56];
+
+// function swap(list, x, y) {
 
 
-numbers.forEach((element,index)=>{
 
-    console.log(element,index);
+//     list[1] = 10
 
-}
-)
+// }
 
 
-myStr = '80%';
 
-y = myStr.replace('%','');
+// let list = [0, 3];
 
-console.log(y);
+// swap(list, 0, 1);
+
+// console.log(list);
+
+numbers = [1, 2, 3, 4, 5, 6];
+
+console.log(Math.ceil((3 + 0) / 2));
