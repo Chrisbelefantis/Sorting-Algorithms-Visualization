@@ -70,6 +70,51 @@ function swapBars(numbers, i, j, printQueueOrder) {
 }
 
 
+
+
+function visualizeMerge(i, j, printQueueOrder) {
+
+
+  setTimeout(() => {
+    const verticalBars = document.querySelectorAll(".vertical-bar");
+
+    for (let k = 0; k < numbers.length; k++) {
+
+      verticalBars[k].style.borderColor = "black";
+
+    }
+
+    verticalBars[i].style.borderColor = "red";
+    verticalBars[j].style.borderColor = "red";
+
+
+    let lostNumber = verticalBars[i].style.height;
+
+    verticalBars[i].style.height = verticalBars[j].style.height;;
+
+    while (i < j) {
+
+      if (j == i + 1) {
+
+        verticalBars[j].style.height = lostNumber;
+
+
+      } else {
+
+        verticalBars[j].style.height = verticalBars[j - 1].style.height;
+
+      }
+
+      j--;
+    }
+  }, 100 * printQueueOrder);
+
+}
+
+
+
+
+
 function bubbleSort(numbers) {
 
   for (let i = 0; i < numbers.length - 1; i++) {
@@ -156,11 +201,15 @@ function mergesort(numbers, low, high) {
 
       if (helper[i] <= helper[j]) {
         numbers[k] = helper[i];
+
+
         i++
 
       } else {
 
         numbers[k] = helper[j];
+        printQueueOrder += 1;
+        visualizeMerge(k, j, printQueueOrder);
         j++;
       }
       k++;
@@ -172,15 +221,7 @@ function mergesort(numbers, low, high) {
       k++;
       i++;
     }
-
-
-
-
   }
-
-
-
-
 
   if (low < high) {
 
@@ -277,7 +318,6 @@ startBtn.addEventListener("click", () => {
 
       /*******************************/
       mergesort(numbers, 0, numbers.length - 1);
-      console.log(numbers, printQueueOrder);
       /*******************************/
 
 

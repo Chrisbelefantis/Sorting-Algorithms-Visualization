@@ -1,20 +1,31 @@
 
-// function swap(list, x, y) {
+function visualizeMerge(numbers, i, j) {
+
+    lostNumber = numbers[i];
+    numbers[i] = numbers[j];
+
+    while (i < j) {
+
+        if (j == i + 1) {
+
+            numbers[j] = lostNumber;
+
+
+        } else {
+
+            numbers[j] = numbers[j - 1];
+
+        }
+        j--;
+    }
+
+}
 
 
 
-//     list[1] = 10
-
-// }
+numbers = [3, 1];
 
 
+visualizeMerge(numbers, 0, 1);
 
-// let list = [0, 3];
-
-// swap(list, 0, 1);
-
-// console.log(list);
-
-numbers = [1, 2, 3, 4, 5, 6];
-
-console.log(Math.ceil((3 + 0) / 2));
+console.log(numbers);

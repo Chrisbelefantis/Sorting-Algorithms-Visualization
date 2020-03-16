@@ -28,9 +28,6 @@ function merge(numbers, low, middle, high) {
     let j = middle + 1;
     let k = low;
 
-    // console.log(`low = ${low} middle = ${middle} high = ${high}`)
-    // console.log(`helper[i] = ${helper[i]} helper[j] = ${helper[j]}\n`);
-
     while (i <= middle && j <= high) {
 
         if (helper[i] <= helper[j]) {
@@ -56,8 +53,8 @@ function merge(numbers, low, middle, high) {
 
 }
 
-numbers = [12, 2, 43, 99, 1, 4, 3, 12];
+numbers = [5, 12, 23, 24, 1, 2, 3, 18];
 
-mergesort(numbers, 0, numbers.length - 1);
+merge(numbers, 0, 3, numbers.length - 1);
 
 console.log(numbers);
