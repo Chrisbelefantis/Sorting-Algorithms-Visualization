@@ -4,3 +4,7 @@ sush as **bubble sort**, **quick sort**, **merge sort** and **heap sort**. For t
 javascript whithout making use of any framework.
 
 # How my app looks
+
+<p align="center">
+	<img src="/images/sorting.gif" >
+</p>
